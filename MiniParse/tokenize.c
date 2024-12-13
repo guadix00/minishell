@@ -182,7 +182,7 @@ t_token *manage_word(t_args *args)
     tkn = init_token(WORD);
     word = ft_strndup(&(args->line[start]), end - start);
     if (!word)
-    {
+    { //free and error futura funcion
         perror("strndup token error\n");
         free(tkn);
         return (NULL);
