@@ -75,7 +75,7 @@ int is_special_char(char c);
 //------------------ ENVIROMENT FUNCTIONS
 void    free_env_list(t_env *env_list);
 void    add_env_variable(t_env **env_list, char *key, char *value);
-t_env *init_env_list(char **env); //*refactorizar, muy larga
+t_env *init_env_list(char **env);
 void    print_env_list(t_env *env_list);
 char    *get_env_value(char *str, t_env *env_list);
 //------------------ TOKENIZE FUNCTIONS
