@@ -8,7 +8,7 @@ SRCS = $(LSRC)/parser/env.c $(LSRC)/parser/expansion.c $(LSRC)/execution/main.c 
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(LSRC) -I$(INCLUDE) -I/usr/include
+CFLAGS =  -I$(LSRC) -I$(INCLUDE) -I/usr/include
 LDFLAGS = -L/usr/lib
 LDLIBS = -lreadline
 LIBFT_DIR = libft

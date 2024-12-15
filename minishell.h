@@ -8,6 +8,7 @@
 # include <stdlib.h> //malloc
 # include <unistd.h> // write
 # include "libft/libft.h"
+# include <fcntl.h>
 
 //------------------ TOKEN TYPE ENUM
 typedef enum    s_type

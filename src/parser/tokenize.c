@@ -113,6 +113,8 @@ t_token *parse_operator(t_operator operator, int spaces)
 
     char    *operator_name[]={"<", ">", "<<", ">>", "|"};
     tkn = init_token(OPERATOR);
+    if (operator == HEREDOC)
+        tkn->type = HEREDOC;
     name = ft_strdup(operator_name[operator]);
     if (!name)
     {
