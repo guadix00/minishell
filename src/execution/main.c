@@ -1,6 +1,8 @@
 #include "minishell.h"
 
 // abre fds infinitos pero no se cierra cuando devuelve su nombre
+// faltaria un strncmp que chequee si line == heredoc name y se cierre
+// hacer un dup para redirigir el output en caso de que se rediriga el heredoc a outfile
 static void process_heredoc(t_token *heredoc_token)
 {
     int fd;
