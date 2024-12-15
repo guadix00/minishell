@@ -1,13 +1,16 @@
 NAME = minishell
 
-SRCS = env.c expansion.c main.c syntax.c tokenize.c utils.c
+LSRC = ./src
+
+INCLUDE = .
+
+SRCS = $(LSRC)/parser/env.c $(LSRC)/parser/expansion.c $(LSRC)/execution/main.c $(LSRC)/syntax_manager/syntax.c $(LSRC)/parser/tokenize.c $(LSRC)/execution/utils.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I/usr/include
+CFLAGS = -Wall -Wextra -Werror -I$(LSRC) -I$(INCLUDE) -I/usr/include
 LDFLAGS = -L/usr/lib
 LDLIBS = -lreadline
-
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
