@@ -48,7 +48,7 @@ void exe_path(t_command **cmd, t_env *env)
         i++;
     }
 
-    ft_putstr_fd("minishell: command not found: ", 2);
+    ft_putstr_fd("command not found", 2);
     ft_putstr_fd((*cmd)->cmd, 2);
     ft_putstr_fd("\n", 2);
     exit(127);
