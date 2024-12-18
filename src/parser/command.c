@@ -79,7 +79,7 @@ t_command **commands(t_token *tkn_lst)
                 if (curr_tkn->value) // Validar que no sea NULL
                 {
                     if (!cmd->cmd) // Asignar el primer token como comando
-                        cmd->cmd = strdup(curr_tkn->value);
+                        cmd->cmd = ft_strdup(curr_tkn->value);
                     else // Agregar como argumento
                     {
                         args[arg_index] = ft_strdup(curr_tkn->value);
