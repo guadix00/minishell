@@ -24,9 +24,9 @@ int process_heredoc(t_token *heredoc_token)
         return -1;
     }
 
-    if (heredoc == 0) // Child process
+    if (heredoc == 0) 
     {
-        close(redir[0]); // Close the read end of the pipe in the child process
+        close(redir[0]);
         while (1)
         {
             line = readline("./m> ");
@@ -39,12 +39,12 @@ int process_heredoc(t_token *heredoc_token)
             write(redir[1], "\n", 1);
             free(line);
         }
-        close(redir[1]); // Close the write end of the pipe in the child process
+        close(redir[1]);
         exit(0);
     }
 
     // Parent process
-    close(redir[1]); // Close the write end of the pipe in the parent process
+    close(redir[1]);
     if (waitpid(heredoc, &status, 0) == -1)
     {
         perror("waitpid");
@@ -59,5 +59,5 @@ int process_heredoc(t_token *heredoc_token)
         return -1;
     }
 
-    return redir[0]; // Return the read end of the pipe
+    return redir[0]; 
 }
