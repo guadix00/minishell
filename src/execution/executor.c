@@ -158,7 +158,6 @@ void execute_cmd(t_command **cmd, t_env **env)
             free_array(new_arr);
         }
     }
-    //reset terminal file 
     int term_out = 0;
     int term_in = 0;
     if (dup2(term_out, STDOUT_FILENO) == -1)

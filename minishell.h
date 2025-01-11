@@ -10,7 +10,7 @@
 # include "libft/libft.h"
 # include <fcntl.h>
 #include <sys/wait.h>
-
+#include <string.h>
 //------------------ TOKEN TYPE ENUM
 typedef enum    s_type
 {
