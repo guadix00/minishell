@@ -35,7 +35,7 @@ int process_heredoc(t_token *heredoc_token)
                 free(line);
                 break;
             }
-            write(redir[1], line, strlen(line));
+            write(redir[1], line, ft_strlen(line));
             write(redir[1], "\n", 1);
             free(line);
         }
