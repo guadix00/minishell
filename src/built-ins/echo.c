@@ -1,5 +1,4 @@
 #include "minishell.h"
-
 static int	check_flag(t_command **cmd)
 {
 	int	i;
