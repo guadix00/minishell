@@ -29,7 +29,7 @@ int process_heredoc(t_token *heredoc_token)
         close(redir[0]);
         while (1)
         {
-            line = readline("./m> ");
+            line = readline("> ");
             if (!line || strcmp(heredoc_token->next->value, line) == 0)
             {
                 free(line);
