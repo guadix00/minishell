@@ -130,7 +130,7 @@ void execute_cmd(t_command **cmd, t_env **env);
 void print_commands(char *line, t_command **cmd_list);
 void print_tokens(char *line, t_token *tkn_lst);
 //------------------ HEREDOC
-void process_heredoc(t_token *heredoc_token);
+int process_heredoc(t_token *heredoc_token);
 //------------------ BUILTINS
 void    manage_builtins(t_command *cmd, t_env **env);
 int is_builtin(t_command *cmd);

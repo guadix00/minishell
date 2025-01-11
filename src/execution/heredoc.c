@@ -1,7 +1,7 @@
+
 #include "minishell.h"
 
-
-void process_heredoc(t_token *heredoc_token)
+int process_heredoc(t_token *heredoc_token)
 {
     int redir[2];
     int heredoc;
@@ -12,7 +12,7 @@ void process_heredoc(t_token *heredoc_token)
     if (pipe(redir) == -1)
     {
         perror("pipe");
-        return;
+        return -1;
     }
 
     heredoc = fork();
@@ -21,48 +21,43 @@ void process_heredoc(t_token *heredoc_token)
         perror("fork");
         close(redir[0]);
         close(redir[1]);
-        return;
+        return -1;
     }
 
-    if (heredoc == 0) 
+    if (heredoc == 0) // Child process
     {
-        close(redir[0]); 
+        close(redir[0]); // Close the read end of the pipe in the child process
         while (1)
         {
-            line = readline("> ");
+            line = readline("./m> ");
             if (!line || strcmp(heredoc_token->next->value, line) == 0)
             {
                 free(line);
                 break;
             }
-            write(redir[1], line, ft_strlen(line));
+            write(redir[1], line, strlen(line));
             write(redir[1], "\n", 1);
             free(line);
         }
-        close(redir[1]); 
+        close(redir[1]); // Close the write end of the pipe in the child process
         exit(0);
     }
 
-    close(redir[1]); 
+    // Parent process
+    close(redir[1]); // Close the write end of the pipe in the parent process
     if (waitpid(heredoc, &status, 0) == -1)
     {
         perror("waitpid");
         close(redir[0]);
-        return;
+        return -1;
     }
 
     status = WEXITSTATUS(status);
     if (status != 0)
     {
         close(redir[0]);
-        return;
+        return -1;
     }
 
-    if (dup2(redir[0], STDIN_FILENO) == -1)
-    {
-        perror("dup2");
-        close(redir[0]);
-        return;
-    }
-    close(redir[0]); 
+    return redir[0]; // Return the read end of the pipe
 }
