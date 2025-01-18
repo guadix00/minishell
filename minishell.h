@@ -11,6 +11,8 @@
 # include <fcntl.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <signal.h>
+
 //------------------ TOKEN TYPE ENUM
 typedef enum    s_type
 {
@@ -38,6 +40,7 @@ struct s_token
     short   is_quote;
     short   expand;
     int     has_space;
+    int     hd_fd;
     t_type  type;
     t_token *next;
     t_token *prev;
@@ -74,6 +77,7 @@ typedef struct s_command
     char    **args;
     t_redir *redirections;
     int     redir_error;
+    int     status;
     int     fd_in;
     int     fd_out;
 }   t_command;
@@ -148,4 +152,11 @@ void get_echo(t_command **cmd);
 int get_cmd_num(t_command **cmd);
 //------------------ PIPES
 void execute_pipes(t_command **cmds, t_env **env);
+//------------------SIGNALS
+void	parent_signals(void);
+void	output_signals(int sig);
+void ctrl_c(int signal);
+void	display_new_line(int sig);
+void	child_signals(void);
+void	here_signals(void);
 #endif

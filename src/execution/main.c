@@ -1,4 +1,11 @@
 #include "minishell.h"
+void ctrl_c(int signal)
+{
+    if (signal == SIGINT)
+    {
+        printf("\nminishell> ");
+    }
+}
 
 int main(int argc, char **argv, char **env)
 {
@@ -8,6 +15,9 @@ int main(int argc, char **argv, char **env)
     t_env   *env_lst;
     t_command **cmd_list;
 
+    signal(SIGINT, ctrl_c);
+    signal(SIGQUIT, SIG_IGN);
+    // parent_signals();
     (void)argv;
     if (argc != 1)
     {
@@ -18,6 +28,7 @@ int main(int argc, char **argv, char **env)
     while (1)
     {
         line = readline("minishell> ");
+        ///non_interactive_signals();
         if (!line)
             break;
         if (line)
@@ -36,18 +47,10 @@ int main(int argc, char **argv, char **env)
                 while (curr_tkn)
                 {
                     if (ft_strncmp(curr_tkn->value, "<<", 2) == 0)
-                    {
-                        process_heredoc(curr_tkn);
-                    }
-                    curr_tkn = curr_tkn->next;
-                }
-                curr_tkn = tkn_lst;
-                while (curr_tkn)
-                {
+                        curr_tkn->hd_fd = process_heredoc(curr_tkn);
                     expand_variables(curr_tkn, env_lst);
                     curr_tkn = curr_tkn->next;
-                }
-
+                }   
                 preprocess_tokens(&tkn_lst);
                 cmd_list = commands(tkn_lst);
                 execute_pipes(cmd_list, &env_lst);
