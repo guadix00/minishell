@@ -167,13 +167,11 @@ void execute_pipes(t_command **cmds, t_env **env)
     cmd_num = get_cmd_num(cmds);
     if (cmd_num <= 0 || cmds == NULL)
         return;
-
     if (cmd_num == 1 && is_unique_builtin(cmds[0]))
     {
         execute_cmd(&cmds[0], env);
-        return ;
+        return;
     }
-
     for (i = 0; i < cmd_num; i++)
     {
         if (i < cmd_num - 1)
@@ -194,6 +192,8 @@ void execute_pipes(t_command **cmds, t_env **env)
 
         if (pid == 0) // Child process
         {
+            child_signals();
+
             // Redirect input if not the first command
             if (prev_fd != -1)
             {

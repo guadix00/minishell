@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 // int process_heredoc(t_token *heredoc_token)
@@ -70,7 +69,6 @@ int process_heredoc(t_token *heredoc_token)
     char *line;
 
     status = 0;
-
     if (pipe(redir) == -1)
     {
         perror("pipe");
@@ -86,16 +84,14 @@ int process_heredoc(t_token *heredoc_token)
         return -1;
     }
 
-    if (heredoc == 0)
+    if (heredoc == 0) // Child process
     {
-        // here_signals();
-        signal(SIGINT, SIG_DFL); 
-        signal(SIGQUIT, SIG_DFL);
-        close(redir[0]);
+        here_signals();
+        close(redir[0]); // Close the read end of the pipe in the child process
         while (1)
         {
             line = readline("> ");
-            if (!line || ft_strncmp(heredoc_token->next->value, line, -1) == 0)
+            if (!line || strcmp(heredoc_token->next->value, line) == 0)
             {
                 free(line);
                 break;
@@ -104,25 +100,18 @@ int process_heredoc(t_token *heredoc_token)
             write(redir[1], "\n", 1);
             free(line);
         }
-        close(redir[1]);
+        close(redir[1]); // Close the write end of the pipe in the child process
         exit(0);
     }
-    signal(SIGINT, SIG_IGN);
-    signal(SIGQUIT, SIG_IGN);
-    // child_signals();
-    
 
-    close(redir[1]);
-
+    // Parent process
+    close(redir[1]); // Close the write end of the pipe in the parent process
     if (waitpid(heredoc, &status, 0) == -1)
     {
         perror("waitpid");
         close(redir[0]);
         return -1;
     }
-    signal(SIGINT, ctrl_c);
-    signal(SIGQUIT, SIG_IGN);
-    // parent_signals();
 
     status = WEXITSTATUS(status);
     if (status != 0)
@@ -130,5 +119,6 @@ int process_heredoc(t_token *heredoc_token)
         close(redir[0]);
         return -1;
     }
-    return redir[0];
+
+    return redir[0]; // Return the read end of the pipe
 }

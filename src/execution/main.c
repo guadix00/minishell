@@ -15,8 +15,6 @@ int main(int argc, char **argv, char **env)
     t_env   *env_lst;
     t_command **cmd_list;
 
-    signal(SIGINT, ctrl_c);
-    signal(SIGQUIT, SIG_IGN);
     // parent_signals();
     (void)argv;
     if (argc != 1)
@@ -25,6 +23,7 @@ int main(int argc, char **argv, char **env)
         return (1);
     }
     env_lst = init_env_list(env);
+    parent_signals();
     while (1)
     {
         line = readline("minishell> ");

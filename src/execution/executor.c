@@ -84,12 +84,12 @@ int get_cmd_num(t_command **cmd)
 
 void execute_cmd(t_command **cmd, t_env **env)
 {
-    int id;
+    //int id;
     char **new_arr;
     int i;
     int cmd_num = get_cmd_num(cmd);
 
-    id = 0;
+    //id = 0;
     if (cmd == NULL)
         return ;
     if ((*cmd)->cmd == NULL)
