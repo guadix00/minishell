@@ -47,13 +47,12 @@ void	process_line(char *line, t_env **env_lst)
 	if (!tkn_lst || syntax_check(tkn_lst))
 	{
 		process_tok(&tkn_lst, env_lst);
-		// if (get_status(0, 0) == 130)
-        // {
-        // 	free_tkn_lst(tkn_lst);
-		// 	// cu_env_var(env_lst, "?", "130");
-		// 	get_status(1,0);
-        //     return ;
-        // }
+		if (get_status(0, 0) == 130)
+        {
+        	free_tkn_lst(tkn_lst);
+			get_status(1,0);
+            return ;
+        }
 		cmd_list = commands(tkn_lst);
 		execute_pipes(cmd_list, env_lst);
 		free_cmd_list(cmd_list);
