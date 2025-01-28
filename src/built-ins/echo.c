@@ -1,72 +1,67 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eriviere <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 15:07:46 by eriviere          #+#    #+#             */
+/*   Updated: 2025/01/23 15:17:24 by eriviere         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-static int	check_flag(t_command **cmd)
+
+static int	check_flag(t_command *cmd)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	// Verificamos que cmd[0] y cmd[0]->args existan y no sean NULL
-	if (!cmd || !cmd[0] || !cmd[0]->args || cmd[0]->args[0] == NULL)
+	if (!cmd || !cmd->args || cmd->args[0] == NULL)
 		return (0);
-
-	// Verificamos si el primer argumento es "-n"
-	if (ft_strncmp(cmd[0]->args[0], "-n", -1) == 0)
+	while (cmd->args[i] && cmd->args[i][0] == '-' && cmd->args[i][1] == 'n')
 	{
-		// Comprobamos si hay múltiples "-n" consecutivos
-		while (cmd[0]->args[i] && ft_strncmp(cmd[0]->args[i], "-n", -1) == 0)
-			i++;
-		return (i);
+		j = 1;
+		while (cmd->args[i][j] == 'n')
+			j++;
+		if (cmd->args[i][j] != '\0')
+			break ;
+		i++;
 	}
-	return (0);
+	return (i);
 }
 
-void get_echo(t_command **cmd)
+static void	echo_print_args(t_command *cmd, int i)
 {
-	int i;
-	int status;
-
-	// Verificamos que cmd y cmd[0] existen para evitar segfaults
-	if (!cmd || !cmd[0] || !cmd[0]->args)
-		return;
-
-	i = 0;
-	status = check_flag(cmd);
-
-	if (!cmd[0]->args[i])
-		printf("\n");
-	// Iteramos a través de los argumentos
-	while (cmd[0]->args[i])
+	while (cmd->args[i])
 	{
-		if (!status) // Sin flag "-n"
+		if (cmd->fd_out != -1)
+			ft_putstr_fd(cmd->args[i], 1);
+		else
+			printf("%s", cmd->args[i]);
+		if (cmd->args[i + 1])
 		{
-			while (cmd[0]->args[i] != NULL)
-			{
-				printf("%s", (cmd[0]->args[i]));
-				if (cmd[0]->args[i + 1])
-					printf(" ");
-				i++;
-			}
-			printf("\n");
-			return;
+			if (cmd->fd_out != -1)
+				ft_putstr_fd(" ", 1);
+			else
+				printf(" ");
 		}
-		else // Con flag "-n"
-		{
-			i += status;
-			while (cmd[0]->args[i] != NULL)
-			{
-				if (cmd[0]->fd_out != -1)
-					ft_putstr_fd((cmd[0]->args[i]), 1);
-				else
-					printf("%s", (cmd[0]->args[i]));
-				if (cmd[0]->args[i + 1])
-				{
-					if (cmd[0]->fd_out != -1)
-						ft_putstr_fd(" ", 1);
-					else
-						printf(" ");
-				}
-				i++;
-			}
-			return; // No imprimimos el salto de línea
-		}
+		i++;
 	}
+}
+
+void	get_echo(t_command *cmd)
+{
+	int	flag;
+
+	if (!cmd->args[0])
+	{
+		printf("\n");
+		return ;
+	}
+	flag = check_flag(cmd);
+	echo_print_args(cmd, flag);
+	if (!flag)
+		printf("\n");
 }

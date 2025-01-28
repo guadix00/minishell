@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   signals_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gualvare <gualvare@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/26 12:12:59 by gualvare          #+#    #+#             */
-/*   Updated: 2025/01/23 17:42:38 by eriviere         ###   ########.fr       */
+/*   Created: 2025/01/22 18:45:18 by gualvare          #+#    #+#             */
+/*   Updated: 2025/01/22 19:03:58 by gualvare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *str)
+int	get_status(int flag, int value)
 {
-	size_t	i;
+	static int	new;
 
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	if (flag == 1)
+		new = value;
+	return (new);
+}
+
+int	get_break_it(int flag, int value)
+{
+	static int	_break;
+
+	if (flag == 1)
+		_break = value;
+	return (_break);
+}
+
+void	break_it(int signal)
+{
+	if (signal == SIGINT)
+		get_break_it(1, 1);
 }
