@@ -85,6 +85,9 @@ int	process_heredoc(t_token *heredoc_token)
 	if (heredoc == -1)
 		return (handle_fork_error(redir));
 	if (heredoc == 0)
+	{
+		signal(SIGINT, here_signals);
 		read_heredoc(heredoc_token, redir);
+	}	
 	return (handle_parent_process(redir, heredoc));
 }
